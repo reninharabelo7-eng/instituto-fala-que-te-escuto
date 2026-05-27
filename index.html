@@ -1,142 +1,120 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Ligaçāo</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Instituto Fala Que Eu Te Escuto</title>
+
+<style>
 body{
-  font-family: Arial, sans-serif;
-  background:#111;
-  color:white;
-  text-align:center;
-  padding-top:50px;
+    margin:0;
+    padding:0;
+    background:#f2f2f2;
+    font-family:Arial, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
 }
 
-form{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+.painel{
+    background:#fff;
+    width:90%;
+    max-width:400px;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(0,0,0,0.15);
+}
+
+.logo{
+    width:120px;
+    margin-bottom:15px;
+}
+
+h1{
+    font-size:24px;
+    margin-bottom:20px;
+    color:#222;
 }
 
 input{
-  width:80%;
-  max-width:300px;
-  padding:15px;
-  margin:10px;
-  border:none;
-  border-radius:12px;
-  font-size:16px;
+    width:100%;
+    padding:14px;
+    margin-bottom:15px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:16px;
+    box-sizing:border-box;
 }
 
-button{
-  background:#25D366;
-  color:white;
-  border:none;
-  padding:15px 30px;
-  border-radius:12px;
-  font-size:18px;
-  font-weight:bold;
-  margin-top:15px;
+.botao{
+    display:block;
+    background:#16a34a;
+    color:#fff;
+    text-decoration:none;
+    padding:16px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:bold;
+    margin-top:10px;
 }
 
 .horario{
-  color:#ccc;
-  margin-bottom:30px;
+    margin-top:15px;
+    color:#555;
+    font-size:15px;
 }
 
+.contador{
+    margin-top:20px;
+    font-size:18px;
+    font-weight:bold;
+    color:#222;
+}
 </style>
 </head>
+
 <body>
 
-  <form id="form">
-    <input type="text" id="apelido" placeholder="Apelido" required>
-    <input type="number" id="idade" placeholder="Idade" required>
-    <button type="submit">Ligar Agora</button>
-    <p style="margin-top:20px; font-size:18px;">
-Total de ligações: <span id="total">0</span>
-</p>
-  </form>
+<div class="painel">
 
-  <script type="module">
+<img src="logo.png" class="logo">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+<h1>Instituto Fala Que Eu Te Escuto</h1>
 
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  increment
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<input type="text" placeholder="Digite seu apelido">
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAlDpTAu8MFaHUwUl1dz3VPlGkZbz6FE9I",
-  authDomain: "instituto-fala-que-te-escuto.firebaseapp.com",
-  projectId: "instituto-fala-que-te-escuto",
-  storageBucket: "instituto-fala-que-te-escuto.firebasestorage.app",
-    messagingSenderId:"853856068015",
-  appId: "1:853856068015:web:a43ff8f9a1294213c48f5a"
-  };
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+<input type="number" placeholder="Digite sua idade">
 
-const form = document.getElementById("form");
-
-form.addEventListener("submit", async function (e) {
-
-  e.preventDefault();
-
-  const ref = doc(db, "cliques", "contador");
-
-  const snap = await getDoc(ref);
-
-  if (!snap.exists()) {
-
-    await setDoc(ref, {
-      total: 1
-    });
-
-  } else {
-
-    await updateDoc(ref, {
-      total: increment(1)
-    });
-
-  }
-
-  window.location.href = "tel:+5521994261237";
-
-});
-<script type="module">
-
-  // 👉 seu Firebase já está aqui em cima (não mexe)
-
-  // 👉 seu código do botão/telefone também fica aqui em cima (não mexe)
-
-  // 👇 CONTADOR (colar no final do script)
-  async function carregarContador() {
-    const ref = doc(db, "cliques", "contador");
-    const snap = await getDoc(ref);
-
-    if (snap.exists()) {
-      document.getElementById("total").innerText = snap.data().total;
-    }
-  }
-
-  carregarContador();
-
-</script>
-</script>
-</body>
-  <img src="logo.png"
-     style="width:110px; display:block; margin:20px auto;">
-<h1>Instituto Fala Que Te Escuto</h1>
+<a class="botao"
+href="tel:5521994261237"
+onclick="contarLigacao()">
+LIGAR AGORA
+</a>
 
 <p class="horario">
 Atendimento das 21h às 23h
 </p>
 
-<form id="form">
+<div class="contador">
+Total de ligações:
+<span id="total">0</span>
+</div>
+
+</div>
+
+<script>
+let total = localStorage.getItem("totalLigacoes") || 0;
+document.getElementById("total").innerText = total;
+
+function contarLigacao(){
+    total++;
+    localStorage.setItem("totalLigacoes", total);
+    document.getElementById("total").innerText = total;
+}
+</script>
+
+</body>
 </html>
