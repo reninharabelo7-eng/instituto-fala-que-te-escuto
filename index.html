@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Ligaçāo</title>
+  <style>
+
+body{
+  font-family: Arial, sans-serif;
+  background:#111;
+  color:white;
+  text-align:center;
+  padding-top:50px;
+}
+
+form{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+input{
+  width:80%;
+  max-width:300px;
+  padding:15px;
+  margin:10px;
+  border:none;
+  border-radius:12px;
+  font-size:16px;
+}
+
+button{
+  background:#25D366;
+  color:white;
+  border:none;
+  padding:15px 30px;
+  border-radius:12px;
+  font-size:18px;
+  font-weight:bold;
+  margin-top:15px;
+}
+
+.horario{
+  color:#ccc;
+  margin-bottom:30px;
+}
+
+</style>
+</head>
+<body>
+
+  <form id="form">
+    <input type="text" id="apelido" placeholder="Apelido" required>
+    <input type="number" id="idade" placeholder="Idade" required>
+    <button type="submit">Ligar Agora</button>
+    <p style="margin-top:20px; font-size:18px;">
+Total de ligações: <span id="total">0</span>
+</p>
+  </form>
+
+  <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  increment
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAlDpTAu8MFaHUwUl1dz3VPlGkZbz6FE9I",
+  authDomain: "instituto-fala-que-te-escuto.firebaseapp.com",
+  projectId: "instituto-fala-que-te-escuto",
+  storageBucket: "instituto-fala-que-te-escuto.firebasestorage.app",
+    messagingSenderId:"853856068015",
+  appId: "1:853856068015:web:a43ff8f9a1294213c48f5a"
+  };
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const form = document.getElementById("form");
+
+form.addEventListener("submit", async function (e) {
+
+  e.preventDefault();
+
+  const ref = doc(db, "cliques", "contador");
+
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) {
+
+    await setDoc(ref, {
+      total: 1
+    });
+
+  } else {
+
+    await updateDoc(ref, {
+      total: increment(1)
+    });
+
+  }
+
+  window.location.href = "tel:+5521973151585";
+
+});
+<script type="module">
+
+  // 👉 seu Firebase já está aqui em cima (não mexe)
+
+  // 👉 seu código do botão/telefone também fica aqui em cima (não mexe)
+
+  // 👇 CONTADOR (colar no final do script)
+  async function carregarContador() {
+    const ref = doc(db, "cliques", "contador");
+    const snap = await getDoc(ref);
+
+    if (snap.exists()) {
+      document.getElementById("total").innerText = snap.data().total;
+    }
+  }
+
+  carregarContador();
+
+</script>
+</script>
+</body>
+<h1>Instituto Fala Que Te Escuto</h1>
+
+<p class="horario">
+Atendimento das 21h às 23h
+</p>
+
+<form id="form">
+</html>
